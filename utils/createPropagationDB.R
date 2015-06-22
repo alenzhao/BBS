@@ -506,6 +506,7 @@ copyPropagatableFiles <- function(srcDir, fileExt, propagationDb, destDir=".")
     {
         # simulate cp --verbose output
         fullDestDir <- file.path(destDir, contribpaths[srcType])
+        addToPkgDb(file.path(srcDir, file))
         if(!file.exists(file.path(fullDestDir, file)))
             cat(sprintf("‘%s‘ -> ‘%s‘\n", file.path(srcDir, file),
                 file.path(fullDestDir, file)))
@@ -515,4 +516,49 @@ copyPropagatableFiles <- function(srcDir, fileExt, propagationDb, destDir=".")
     }
 
     invisible(NULL)
+}
+
+get_svn_rev <- function(package)
+{
+  if (grepl("/bioc$", Sys.getenv("REPOS_ROOT")))
+      repo <- "bioc"
+  else
+      repo <- "data-experiment"
+  file <- sprintf("/home/biocbuild/bbs-%s-%s/svninfo/svn-info-%s.txt",
+    Sys.getenv("BIOC_VERSION", repo, package))
+  dcf <- read.dcf(file)
+  dcf[,"Last Changed Rev"]
+}
+
+## FIXME - Sometimes we push packages manually (go to the internal
+## repos at ~biocadmin/PACKAGES/x.y/ and remove a package, add the
+## new version, and run the prepare and push scripts.) That will 
+## NOT trigger this function. What's the solution? Call this function
+## at some other point? Or remember to call it manually when 
+## we push something manually...? 
+## And what about flushing? That may result in cases where 
+## a version number does not change but an svn rev does...?
+addToPkgDb <- function(filename)
+{
+    # For now everything here goes in a tryCatch because we 
+    # do not want anything here to mess up the important work
+    # of propagating packages. Maybe after this is more robust
+    # we can remove the tryCatch.
+    tryCatch({
+        archiveName <- basename(file)
+        dirname <- dirname(file)
+        segs <- strsplit(dirname, "/", fixed=TRUE)[[1]]
+        platform <- segs[length(segs)]
+        segs <- strsplit(archiveName, "_", fixed=TRUE)[[1]]
+        pkgName <- segs[1]
+        version <- sub("\\.zip$|\\.tgz$|\\.tar.gz$", "", segs[2])
+        today <- Sys.Date()
+        thisam <- strptime(sprintf("%s-%s-%s 00:00:00",
+            format(today, "%Y"), format(today, "%m"),
+            format(today, "%d")), "%Y-%m-%d %H:%M:%S")
+        svn_rev <- get_svn_rev(pkgName)
+    },
+    error=function(e){
+
+    })
 }
