@@ -538,7 +538,7 @@ get_svn_rev <- function(package)
 ## we push something manually...? 
 ## And what about flushing? That may result in cases where 
 ## a version number does not change but an svn rev does...?
-addToPkgDb <- function(filename)
+addToPkgDb <- function(file)
 {
     # For now everything here goes in a tryCatch because we 
     # do not want anything here to mess up the important work
@@ -557,7 +557,7 @@ addToPkgDb <- function(filename)
         if (grepl("/bioc$", Sys.getenv("REPOS_ROOT")))
             repo <- "bioc"
         else
-            repo <- "data-experiment"
+            repo <- "data/experiment"
 
         archiveName <- basename(file)
         dirname <- dirname(file)
