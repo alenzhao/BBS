@@ -525,7 +525,7 @@ get_svn_rev <- function(package)
   else
       repo <- "data-experiment"
   file <- sprintf("/home/biocbuild/bbs-%s-%s/svninfo/svn-info-%s.txt",
-    Sys.getenv("BIOC_VERSION", repo, package))
+    Sys.getenv("BIOC_VERSION"), repo, package)
   dcf <- read.dcf(file)
   dcf[,"Last Changed Rev"]
 }
