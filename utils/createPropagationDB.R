@@ -572,17 +572,17 @@ addToPkgDb <- function(file)
             format(today, "%d")), "%Y-%m-%d %H:%M:%S")
         svn_rev <- get_svn_rev(pkgName)
         new_row <- data.frame(package=pkgName, svn_rev=svn_rev, version=version,
-            date_propagated=thisam, platform=platform, date_superseded=NULL,
+            date_propagated=thisam, platform=platform, date_superseded=NA,
             stringsAsFactors=FALSE)
         new_row2 <- new_row
-        now_row2$date_superseded <- Sys.time()
+        new_row2$date_superseded <- Sys.time()
 
         db_file <- sprintf("/home/biocadmin/PACKAGES/%s/%s/pkg_db.sqlite3",
             Sys.getenv("BIOC_VERSION"), repo)
         db <- dbConnect(SQLite(), dbname=db_file)
         if(!"events" %in% dbListTables(db))
-            dbWriteTable(con, events, new_row2[0, ])
-        dbWriteTable(con, 'events', new_row, append=TRUE)
+            dbWriteTable(db, 'events', new_row2[0, ])
+        dbWriteTable(db, 'events', new_row, append=TRUE)
         dbDisconnect(db)
     },
     error=function(e){
