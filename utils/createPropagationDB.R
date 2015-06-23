@@ -545,6 +545,20 @@ addToPkgDb <- function(filename)
     # of propagating packages. Maybe after this is more robust
     # we can remove the tryCatch.
     tryCatch({
+        if(!require(BiocInstaller))
+            source("http://bioconductor.org/biocLite.R")
+        deps <- c("RSQLite")
+        for (dep in deps)
+            if (!do.call(require, list(dep)))
+            {
+                biocLite(dep)
+                do.call(require, list(dep))
+            }
+        if (grepl("/bioc$", Sys.getenv("REPOS_ROOT")))
+            repo <- "bioc"
+        else
+            repo <- "data-experiment"
+
         archiveName <- basename(file)
         dirname <- dirname(file)
         segs <- strsplit(dirname, "/", fixed=TRUE)[[1]]
@@ -557,6 +571,19 @@ addToPkgDb <- function(filename)
             format(today, "%Y"), format(today, "%m"),
             format(today, "%d")), "%Y-%m-%d %H:%M:%S")
         svn_rev <- get_svn_rev(pkgName)
+        new_row <- data.frame(package=pkgName, svn_rev=svn_rev, version=version,
+            date_propagated=thisam, platform=platform, date_superseded=NULL,
+            stringsAsFactors=FALSE)
+        new_row2 <- new_row
+        now_row2$date_superseded <- Sys.time()
+
+        db_file <- sprintf("/home/biocadmin/PACKAGES/%s/%s/pkg_db.sqlite3",
+            Sys.getenv("BIOC_VERSION"), repo)
+        db <- dbConnect(SQLite(), dbname=db_file)
+        if(!"events" %in% dbListTables(db))
+            dbWriteTable(con, events, new_row2[0, ])
+        dbWriteTable(con, 'events', new_row, append=TRUE)
+        dbDisconnect(db)
     },
     error=function(e){
 
