@@ -26,7 +26,7 @@ update_repo()
 	fi
   echo "$PROPAGATION_R_SCRIPT; copyPropagatableFiles('$outgoing_subdir', '$fileext', '$PROPAGATION_DB_FILE', '$REPOS_ROOT') " | $R --slave
 	#cp --no-clobber --verbose "$outgoing_subdir"/*.$fileext .
-	echo "$R_SCRIPT; oldpkgs <- list.old.pkgs(suffix='.$fileext'); removed <- file.remove(oldpkgs); names(removed) <- oldpkgs; removed" | $R --slave
+	echo "$R_SCRIPT; oldpkgs <- list.old.pkgs(suffix='.$fileext'); removed <- file.remove(oldpkgs); names(removed) <- oldpkgs; $PROPAGATION_R_SCRIPT; supersede(removed, '$outgoing_subdir') ; removed" | $R --slave
 }
 
 echo ""

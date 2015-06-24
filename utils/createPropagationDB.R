@@ -554,38 +554,102 @@ addToPkgDb <- function(file)
                 biocLite(dep)
                 do.call(require, list(dep))
             }
-        if (grepl("/bioc$", Sys.getenv("REPOS_ROOT")))
-            repo <- "bioc"
-        else
-            repo <- "data/experiment"
 
         archiveName <- basename(file)
         dirname <- dirname(file)
-        segs <- strsplit(dirname, "/", fixed=TRUE)[[1]]
-        platform <- segs[length(segs)]
-        segs <- strsplit(archiveName, "_", fixed=TRUE)[[1]]
-        pkgName <- segs[1]
-        version <- sub("\\.zip$|\\.tgz$|\\.tar.gz$", "", segs[2])
-        today <- Sys.Date()
-        thisam <- strptime(sprintf("%s-%s-%s 00:00:00",
-            format(today, "%Y"), format(today, "%m"),
-            format(today, "%d")), "%Y-%m-%d %H:%M:%S")
+        platform <- .get_platform(dirname)
+        pkgName <- .get_pkgname(archiveName)
+        version <- .get_version(archiveName)
+        thisam <- .get_today_at_midnight()
         svn_rev <- get_svn_rev(pkgName)
-        new_row <- data.frame(package=pkgName, svn_rev=svn_rev, version=version,
+        new_row <- data.frame(id=NA, package=pkgName, svn_rev=svn_rev, version=version,
             date_propagated=thisam, platform=platform, date_superseded=NA,
             stringsAsFactors=FALSE)
         new_row2 <- new_row
         new_row2$date_superseded <- Sys.time()
 
-        db_file <- sprintf("/home/biocadmin/PACKAGES/%s/%s/pkg_db.sqlite3",
-            Sys.getenv("BIOC_VERSION"), repo)
+        db_file <- .get_db_file()
         db <- dbConnect(SQLite(), dbname=db_file)
         if(!"events" %in% dbListTables(db))
-            dbWriteTable(db, 'events', new_row2[0, ])
-        dbWriteTable(db, 'events', new_row, append=TRUE)
+            dbSendQuery(db, "create table events(id integer primary key asc,
+                package text, svn_rev text, version text, 
+                date_propagated real, platform text, date_superseded real)")
+            # dbWriteTable(db, 'events', new_row2[0, ], TRUE)
+        dbWriteTable(db, 'events', new_row, TRUE, append=TRUE)
         dbDisconnect(db)
     },
     error=function(e){
 
     })
+}
+
+.get_db_file <- function()
+{
+    if (grepl("/bioc$", Sys.getenv("REPOS_ROOT")))
+        repo <- "bioc"
+    else
+        repo <- "data/experiment"
+
+    db_file <- sprintf("/home/biocadmin/PACKAGES/%s/%s/pkg_db.sqlite3",
+        Sys.getenv("BIOC_VERSION"), repo)
+}
+
+.get_platform <- function(input)
+{
+    segs <- strsplit(input, "/", fixed=TRUE)[[1]]
+    segs[length(segs)]
+}
+
+.get_version <- function(input)
+{
+    segs <- strsplit(input, "_", fixed=TRUE)[[1]]
+    sub("\\.zip$|\\.tgz$|\\.tar.gz$", "", segs[2])
+}
+
+.get_pkgname <- function(input)
+{
+    segs <- strsplit(input, "_", fixed=TRUE)[[1]]
+    segs[1]
+}
+
+.get_today_at_midnight <- function()
+{
+    today <- Sys.Date()
+    strptime(sprintf("%s-%s-%s 00:00:00",
+        format(today, "%Y"), format(today, "%m"),
+        format(today, "%d")), "%Y-%m-%d %H:%M:%S")
+}
+
+supersede <- function(pkg_results, dir)
+{
+    ## pkg_results is a logical vector where names are archive names and
+    ## values are whether the removal (done in list.old.pkgs.R) worked.
+
+    ## put this all in tryCatch for now so that 
+    ## this does not derail critical code.
+    tryCatch({
+        db_file <- .get_db_file()
+        db <- dbConnect(SQLite(), dbname=db_file)
+        platform <- .get_platform(dir)
+        thisam <- .get_today_at_midnight()
+        archiveNames <- names(which(pkg_results))
+        for (archiveName in archiveNames)
+        {
+            pkgName <- .get_pkgname(archiveName)
+            version <- .get_version(archiveName)
+            # find the row (if any, and there should only be one)
+            # where package=pkgName, 
+            # platform=platform and date_superseded is NULL
+            res <- dbGetPreparedQuery("select * from events where package=? and platform=? and date_superseded is null",
+                data.frame(package=pkgName, platform=platform))
+            if (nrow(res) == 0)
+                next
+            if (nrow(res)  > 1)
+                warn(sprintf("More than one old version of %s!", pkgName))
+            # for each row in res:
+            #   set date_superseded to thisam
+            #   save row back to db. HOW to do that? (set row$id=NA)
+        }
+        dbDisconnect(db)
+    }, error=function(e){})
 }
