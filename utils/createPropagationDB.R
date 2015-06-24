@@ -646,9 +646,10 @@ supersede <- function(pkg_results, dir)
                 next
             if (nrow(res)  > 1)
                 warn(sprintf("More than one old version of %s!", pkgName))
-            # for each row in res:
-            #   set date_superseded to thisam
-            #   save row back to db. HOW to do that? (set row$id=NA)
+            res$date_superseded <- thisam
+            result <- dbGetPreparedQuery(db,
+                "update events set date_superseded = ? where id in (?)",
+                data.frame(date_superseded=thisam, id=res$id))
         }
         dbDisconnect(db)
     }, error=function(e){})
