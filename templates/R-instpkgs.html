@@ -1,0 +1,19 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML>
+<HEAD>
+<script language="javascript">
+if (!/\.html$|\/$|#/.test(window.location.href))
+  window.location.href = window.location.href + "/";
+</script>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>Installed R packages on {{ hostname }}</TITLE>
+<LINK rel="stylesheet" href="report.css" type="text/css">
+</HEAD>
+<BODY>
+<TABLE style="width: 100%; border-spacing: 0px; border-collapse: collapse;"><TR><TD style="padding: 0px; text-align: left;"><I><A href="./index.html">Back to the &quot;Multiple platform build/check report&quot;</A></I></TD></TR></TABLE>
+<DIV class="{{ hostname }}">
+<PRE>
+{{ installed_packages }}
+</PRE>
+</DIV></BODY>
+</HTML>

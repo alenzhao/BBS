@@ -1,0 +1,95 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML>
+<HEAD>
+<script language="javascript">
+if (!/\.html$|\/$|#/.test(window.location.href))
+  window.location.href = window.location.href + "/";
+</script>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>More about {{ hostname }}</TITLE>
+<LINK rel="stylesheet" href="report.css" type="text/css">
+</HEAD>
+<BODY>
+<TABLE style="width: 100%; border-spacing: 0px; border-collapse: collapse;"><TR><TD style="padding: 0px; text-align: left;"><I><A href="./index.html">Back to the &quot;Multiple platform build/check report&quot;</A></I></TD></TR></TABLE>
+<DIV class="{{ hostname }}">
+<H1>More about zin2</H1><TABLE>
+<TR><TD><B>Hostname:&nbsp;</B></TD><TD>{{ hostname }}</TD></TR>
+<TR><TD><B>OS:&nbsp;</B></TD><TD>{{ os }}</TD></TR>
+<TR><TD><B>Arch:&nbsp;</B></TD><TD>{{ arch }}</TD></TR>
+<TR><TD><B>Platform:&nbsp;</B></TD><TD>{{ platform }}</TD></TR>
+<TR><TD><B>R&nbsp;version:&nbsp;</B></TD><TD>{{ r_version }}</TD></TR>
+</TABLE>
+<HR>
+<H2>C compiler</H2>
+<TABLE class="Rconfig">
+<TR><TD style="background: #CCC; width: 150px;"><I><B>R variable</B> (VAR)</I></TD><TD style="background: #CCC;"><I><B>Value</B> ('R&nbsp;CMD&nbsp;config&nbsp;&lt;VAR&gt;' output)</I></TD></TR>
+<TR><TD><B>CC</B></TD><TD>{{ cc }}</TD></TR>
+<TR><TD><B>CFLAGS</B></TD><TD>{{ cflags }}</TD></TR>
+<TR><TD><B>CPICFLAGS</B></TD><TD>{{ cpicflags }}</TD></TR>
+<TR><TD><B>CPP</B></TD><TD>{{ cpp}}</TD></TR>
+<TR><TD COLSPAN="2" style="font-size: smaller;"><I>Please refer to 'R CMD config -h' for the meaning of these variables</I></TD></TR>
+</TABLE>
+<P><B>Compiler version</B> ('gcc -std=gnu99 --version' output):</P>
+<PRE style="margin-left: 12px;">
+{{ compiler_version }}
+</PRE>
+<HR>
+<H2>C++ compiler</H2>
+<TABLE class="Rconfig">
+<TR><TD style="background: #CCC; width: 150px;"><I><B>R variable</B> (VAR)</I></TD><TD style="background: #CCC;"><I><B>Value</B> ('R&nbsp;CMD&nbsp;config&nbsp;&lt;VAR&gt;' output)</I></TD></TR>
+<TR><TD><B>CXX</B></TD><TD>{{ cxx }}</TD></TR>
+<TR><TD><B>CXXFLAGS</B></TD><TD>{{ cxxflags }}</TD></TR>
+<TR><TD><B>CXXPICFLAGS</B></TD><TD>{{ cxxpicflags }}</TD></TR>
+<TR><TD><B>CXXCPP</B></TD><TD>{{  cxxcpp }}</TD></TR>
+<TR><TD COLSPAN="2" style="font-size: smaller;"><I>Please refer to 'R CMD config -h' for the meaning of these variables</I></TD></TR>
+</TABLE>
+<P><B>Compiler version</B> ('g++ --version' output):</P>
+<PRE style="margin-left: 12px;">
+{{ cxx_compiler_version }}
+</PRE>
+<HR>
+<H2>C++11 compiler</H2>
+<TABLE class="Rconfig">
+<TR><TD style="background: #CCC; width: 150px;"><I><B>R variable</B> (VAR)</I></TD><TD style="background: #CCC;"><I><B>Value</B> ('R&nbsp;CMD&nbsp;config&nbsp;&lt;VAR&gt;' output)</I></TD></TR>
+<TR><TD><B>CXX1X</B></TD><TD>{{ CXX1X }}</TD></TR>
+<TR><TD><B>CXX1XFLAGS</B></TD><TD> {{  cxx1xflags }}</TD></TR>
+<TR><TD><B>CXX1XPICFLAGS</B></TD><TD>{{ cxx1xpicflags }}</TD></TR>
+<TR><TD><B>CXX1XSTD</B></TD><TD>{{ cxx1xstd }}</TD></TR>
+<TR><TD COLSPAN="2" style="font-size: smaller;"><I>Please refer to 'R CMD config -h' for the meaning of these variables</I></TD></TR>
+</TABLE>
+<P><B>Compiler version</B> ('g++ --version' output):</P>
+<PRE style="margin-left: 12px;">
+{{ cxx_11_compiler_version }}
+</PRE>
+<HR>
+<H2>Fortran 77 compiler</H2>
+<TABLE class="Rconfig">
+<TR><TD style="background: #CCC; width: 150px;"><I><B>R variable</B> (VAR)</I></TD><TD style="background: #CCC;"><I><B>Value</B> ('R&nbsp;CMD&nbsp;config&nbsp;&lt;VAR&gt;' output)</I></TD></TR>
+<TR><TD><B>F77</B></TD><TD>{{ f77 }}</TD></TR>
+<TR><TD><B>FFLAGS</B></TD><TD>{{ fflags }}</TD></TR>
+<TR><TD><B>FLIBS</B></TD><TD>{{ flibs}}</TD></TR>
+<TR><TD><B>FPICFLAGS</B></TD><TD>{{ fpicflags }}</TD></TR>
+<TR><TD COLSPAN="2" style="font-size: smaller;"><I>Please refer to 'R CMD config -h' for the meaning of these variables</I></TD></TR>
+</TABLE>
+<P><B>Compiler version</B> ('gfortran --version' output):</P>
+<PRE style="margin-left: 12px;">
+{{ fortran_compiler_version}}
+</PRE>
+<HR>
+<H2>Fortran 9x compiler</H2>
+<TABLE class="Rconfig">
+<TR><TD style="background: #CCC; width: 150px;"><I><B>R variable</B> (VAR)</I></TD><TD style="background: #CCC;"><I><B>Value</B> ('R&nbsp;CMD&nbsp;config&nbsp;&lt;VAR&gt;' output)</I></TD></TR>
+<TR><TD><B>FC</B></TD><TD>{{ fortran9_fc }}</TD></TR>
+<TR><TD><B>FCFLAGS</B></TD><TD>{{ fortran9_fcflags }}</TD></TR>
+<TR><TD><B>FCPICFLAGS</B></TD><TD>{{ fortran9_fcpicflags }}</TD></TR>
+<TR><TD COLSPAN="2" style="font-size: smaller;"><I>Please refer to 'R CMD config -h' for the meaning of these variables</I></TD></TR>
+</TABLE>
+<P><B>Compiler version</B> ('gfortran --version' output):</P>
+<PRE style="margin-left: 12px;">
+{{ fortran9_compiler_version}}
+</PRE>
+<HR>
+<P>More information might be added in the future...</P>
+</DIV></BODY>
+</HTML>
