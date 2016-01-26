@@ -14,6 +14,8 @@ import shutil
 import re
 import fnmatch
 
+from jinja2 import Environment, FileSystemLoader
+
 import bbs.fileutils
 import bbs.parse
 import bbs.jobs
@@ -21,6 +23,9 @@ import bbs.html
 import BBScorevars
 import BBSvars
 import BBSreportutils
+
+TEMPLATE_PATH =  os.path.join(os.path.dirname(sys.argv[0]), 'templates')
+TEMPLATE_ENV = Environment(loader=FileSystemLoader(TEMPLATE_PATH))
 
 
 class LeafReportReference:
@@ -930,25 +935,21 @@ def make_NodeInfo_page(Node_rdir, node):
 ### Returns the 2-string tuple containing the filename of the generated page
 ### and the number of installed pkgs.
 def make_Rinstpkgs_page(Node_rdir, node):
+    template = TEMPLATE_ENV.get_template("R-instpkgs.html")
+    data = {}
+    data['hostname'] = node.hostname
+    data['hostname_css'] = node.hostname.replace('.', "_")
+    data['installed_packages'] = ''
     title = 'Installed R packages on %s' % node.id
     Rinstpkgs_page = '%s-R-instpkgs.html' % node.id
-    out = open(Rinstpkgs_page, 'w')
-    write_top_asHTML(out, title, 'report.css')
-    out.write('<BODY>\n')
-    write_goback_asHTML(out, "./index.html")
-    out.write('<DIV class="%s">\n' % node.hostname.replace(".", "_"))
     file = 'NodeInfo/R-instpkgs.txt'
-    out.write('<PRE>\n')
     f = Node_rdir.WOpen(file)
     nline = 0
     for line in f:
-        out.write(line)
+        data['installed_packages'] += line
         nline += 1
     f.close()
-    out.write('</PRE>\n')
-    out.write('</DIV></BODY>\n')
-    out.write('</HTML>\n')
-    out.close()
+    template.stream(data).dump(Rinstpkgs_page)
     return (Rinstpkgs_page, str(nline-1))
 
 def write_node_specs_table(out):
