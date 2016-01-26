@@ -13,6 +13,7 @@ import time
 import shutil
 import re
 import fnmatch
+from collections import OrderedDict
 
 from jinja2 import Environment, FileSystemLoader
 
@@ -860,6 +861,17 @@ def write_Rconfig_table_from_file(out, Node_rdir, vars):
     out.write('</TABLE>\n')
     return
 
+def get_SysCommandVersion_from_file(Node_rdir, var):
+    file = 'NodeInfo/%s-version.txt' % var
+    f = Node_rdir.WOpen(file, catch_HTTPerrors=True)
+    if f == None:
+        return
+    ret = ""
+    for line in f:
+        ret += line
+    f.close()
+    return(ret)
+
 def write_SysCommandVersion_from_file(out, Node_rdir, var):
     file = 'NodeInfo/%s-version.txt' % var
     f = Node_rdir.WOpen(file, catch_HTTPerrors=True)
@@ -876,59 +888,53 @@ def write_SysCommandVersion_from_file(out, Node_rdir, var):
     return
 
 def make_NodeInfo_page(Node_rdir, node):
-    title = 'More about %s' % node.id
+    data = {}
+    data['hostname'] = node.hostname
+    data['hostname_css'] = node.hostname.replace(".", "_")
+    template = TEMPLATE_ENV.get_template("NodeInfo.html")
+
     NodeInfo_page_path = '%s-NodeInfo.html' % node.id
-    out = open(NodeInfo_page_path, 'w')
-    write_top_asHTML(out, title, 'report.css')
-    out.write('<BODY>\n')
-    write_goback_asHTML(out, "./index.html")
-    out.write('<DIV class="%s">\n' % node.hostname.replace(".", "_"))
 
-    out.write('<H1>%s</H1>' % title)
-    out.write('<TABLE>\n')
-    out.write('<TR><TD><B>Hostname:&nbsp;</B></TD><TD>%s</TD></TR>\n' % node.hostname)
-    out.write('<TR><TD><B>OS:&nbsp;</B></TD><TD>%s</TD></TR>\n' % node.os_html)
-    out.write('<TR><TD><B>Arch:&nbsp;</B></TD><TD>%s</TD></TR>\n' % node.arch)
-    out.write('<TR><TD><B>Platform:&nbsp;</B></TD><TD>%s</TD></TR>\n' % node.platform)
-    out.write('<TR><TD><B>R&nbsp;version:&nbsp;</B></TD><TD>%s</TD></TR>\n' % read_Rversion(Node_rdir))
-    out.write('</TABLE>\n')
-    out.write('<HR>\n')
+    data['os'] = node.os_html
+    data['arch'] = node.arch
+    data['platform'] = node.platform
+    data['r_version'] = read_Rversion(Node_rdir)
 
-    out.write('<H2>C compiler</H2>\n')
     C_vars = ['CC', 'CFLAGS', 'CPICFLAGS', 'CPP']
-    write_Rconfig_table_from_file(out, Node_rdir, C_vars)
-    write_SysCommandVersion_from_file(out, Node_rdir, 'CC')
-    out.write('<HR>\n')
+    ccdict = OrderedDict()
+    for var in C_vars:
+        ccdict[var] = get_Rconfig_value_from_file(Node_rdir, var)
+    data['ccdict'] = ccdict
+    data['cc_compiler_version'] = get_SysCommandVersion_from_file(Node_rdir, 'CC')
 
-    out.write('<H2>C++ compiler</H2>\n')
+    cxxdict = OrderedDict()
     Cplusplus_vars = ['CXX', 'CXXFLAGS', 'CXXPICFLAGS', 'CXXCPP']
-    write_Rconfig_table_from_file(out, Node_rdir, Cplusplus_vars)
-    write_SysCommandVersion_from_file(out, Node_rdir, 'CXX')
-    out.write('<HR>\n')
+    for var in Cplusplus_vars:
+        cxxdict[var] = get_Rconfig_value_from_file(Node_rdir, var)
+    data['cxxdict'] = cxxdict
 
-    out.write('<H2>C++11 compiler</H2>\n')
+    data['cxx_compiler_version'] = get_SysCommandVersion_from_file(Node_rdir, 'CXX')
+    cxx11dict = OrderedDict()
     Cplusplus11_vars = ['CXX1X', 'CXX1XFLAGS', 'CXX1XPICFLAGS', 'CXX1XSTD']
-    write_Rconfig_table_from_file(out, Node_rdir, Cplusplus11_vars)
-    write_SysCommandVersion_from_file(out, Node_rdir, 'CXX1X')
-    out.write('<HR>\n')
+    for var in Cplusplus11_vars:
+        cxx11dict[var] = get_Rconfig_value_from_file(Node_rdir, var)
+    data['cxx11dict'] = cxx11dict
+    data['cxx_11_compiler_version'] = get_SysCommandVersion_from_file(Node_rdir, 'CXX1X')
 
-    out.write('<H2>Fortran 77 compiler</H2>\n')
+    f77dict = OrderedDict()
     Fortran77_vars = ['F77', 'FFLAGS', 'FLIBS', 'FPICFLAGS']
-    write_Rconfig_table_from_file(out, Node_rdir, Fortran77_vars)
-    write_SysCommandVersion_from_file(out, Node_rdir, 'F77')
-    out.write('<HR>\n')
+    for var in Fortran77_vars:
+        f77dict[var] = get_Rconfig_value_from_file(Node_rdir, var)
+    data['f77dict'] = f77dict
+    data['f77_compiler_version'] = get_SysCommandVersion_from_file(Node_rdir, 'F77')
 
-    out.write('<H2>Fortran 9x compiler</H2>\n')
+    f9xdict = OrderedDict()
     Fortran9x_vars = ['FC', 'FCFLAGS', 'FCPICFLAGS']
-    write_Rconfig_table_from_file(out, Node_rdir, Fortran9x_vars)
-    write_SysCommandVersion_from_file(out, Node_rdir, 'FC')
-    out.write('<HR>\n')
-
-    out.write('<P>More information might be added in the future...</P>\n')
-
-    out.write('</DIV></BODY>\n')
-    out.write('</HTML>\n')
-    out.close()
+    for var in Fortran9x_vars:
+        f9xdict[var] = get_Rconfig_value_from_file(Node_rdir, var)
+    data['f9xdict'] = f9xdict
+    data['f9x_compiler_version'] = get_SysCommandVersion_from_file(Node_rdir, 'FC')
+    template.stream(data).dump(NodeInfo_page_path)
     return NodeInfo_page_path
 
 ### Make local copy (and rename) R-instpkgs.txt file.

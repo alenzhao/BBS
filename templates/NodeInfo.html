@@ -12,7 +12,7 @@ if (!/\.html$|\/$|#/.test(window.location.href))
 </HEAD>
 <BODY>
 <TABLE style="width: 100%; border-spacing: 0px; border-collapse: collapse;"><TR><TD style="padding: 0px; text-align: left;"><I><A href="./index.html">Back to the &quot;Multiple platform build/check report&quot;</A></I></TD></TR></TABLE>
-<DIV class="{{ hostname }}">
+<DIV class="{{ hostname_css }}">
 <H1>More about zin2</H1><TABLE>
 <TR><TD><B>Hostname:&nbsp;</B></TD><TD>{{ hostname }}</TD></TR>
 <TR><TD><B>OS:&nbsp;</B></TD><TD>{{ os }}</TD></TR>
@@ -24,27 +24,25 @@ if (!/\.html$|\/$|#/.test(window.location.href))
 <H2>C compiler</H2>
 <TABLE class="Rconfig">
 <TR><TD style="background: #CCC; width: 150px;"><I><B>R variable</B> (VAR)</I></TD><TD style="background: #CCC;"><I><B>Value</B> ('R&nbsp;CMD&nbsp;config&nbsp;&lt;VAR&gt;' output)</I></TD></TR>
-<TR><TD><B>CC</B></TD><TD>{{ cc }}</TD></TR>
-<TR><TD><B>CFLAGS</B></TD><TD>{{ cflags }}</TD></TR>
-<TR><TD><B>CPICFLAGS</B></TD><TD>{{ cpicflags }}</TD></TR>
-<TR><TD><B>CPP</B></TD><TD>{{ cpp}}</TD></TR>
+{% for key, value in ccdict.iteritems() %}
+	<TR><TD><B>{{ key }} </B></TD><TD>{{ value }}</TD></TR>
+{% endfor %}
 <TR><TD COLSPAN="2" style="font-size: smaller;"><I>Please refer to 'R CMD config -h' for the meaning of these variables</I></TD></TR>
 </TABLE>
-<P><B>Compiler version</B> ('gcc -std=gnu99 --version' output):</P>
+<P><B>Compiler version</B> ('{{ ccdict['CC']}} --version' output):</P>
 <PRE style="margin-left: 12px;">
-{{ compiler_version }}
+{{ cc_compiler_version }}
 </PRE>
 <HR>
 <H2>C++ compiler</H2>
 <TABLE class="Rconfig">
 <TR><TD style="background: #CCC; width: 150px;"><I><B>R variable</B> (VAR)</I></TD><TD style="background: #CCC;"><I><B>Value</B> ('R&nbsp;CMD&nbsp;config&nbsp;&lt;VAR&gt;' output)</I></TD></TR>
-<TR><TD><B>CXX</B></TD><TD>{{ cxx }}</TD></TR>
-<TR><TD><B>CXXFLAGS</B></TD><TD>{{ cxxflags }}</TD></TR>
-<TR><TD><B>CXXPICFLAGS</B></TD><TD>{{ cxxpicflags }}</TD></TR>
-<TR><TD><B>CXXCPP</B></TD><TD>{{  cxxcpp }}</TD></TR>
+{% for key, value in cxxdict.iteritems() %}
+	<TR><TD><B>{{ key }} </B></TD><TD>{{ value }}</TD></TR>
+{% endfor %}
 <TR><TD COLSPAN="2" style="font-size: smaller;"><I>Please refer to 'R CMD config -h' for the meaning of these variables</I></TD></TR>
 </TABLE>
-<P><B>Compiler version</B> ('g++ --version' output):</P>
+<P><B>Compiler version</B> ('{{ cxxdict['CXX'] }} --version' output):</P>
 <PRE style="margin-left: 12px;">
 {{ cxx_compiler_version }}
 </PRE>
@@ -52,13 +50,12 @@ if (!/\.html$|\/$|#/.test(window.location.href))
 <H2>C++11 compiler</H2>
 <TABLE class="Rconfig">
 <TR><TD style="background: #CCC; width: 150px;"><I><B>R variable</B> (VAR)</I></TD><TD style="background: #CCC;"><I><B>Value</B> ('R&nbsp;CMD&nbsp;config&nbsp;&lt;VAR&gt;' output)</I></TD></TR>
-<TR><TD><B>CXX1X</B></TD><TD>{{ CXX1X }}</TD></TR>
-<TR><TD><B>CXX1XFLAGS</B></TD><TD> {{  cxx1xflags }}</TD></TR>
-<TR><TD><B>CXX1XPICFLAGS</B></TD><TD>{{ cxx1xpicflags }}</TD></TR>
-<TR><TD><B>CXX1XSTD</B></TD><TD>{{ cxx1xstd }}</TD></TR>
+{% for key, value in cxx11dict.iteritems() %}
+	<TR><TD><B>{{ key }} </B></TD><TD>{{ value }}</TD></TR>
+{% endfor %}
 <TR><TD COLSPAN="2" style="font-size: smaller;"><I>Please refer to 'R CMD config -h' for the meaning of these variables</I></TD></TR>
 </TABLE>
-<P><B>Compiler version</B> ('g++ --version' output):</P>
+<P><B>Compiler version</B> ('{{ cxx11dict['CXX1X'] }} --version' output):</P>
 <PRE style="margin-left: 12px;">
 {{ cxx_11_compiler_version }}
 </PRE>
@@ -66,28 +63,27 @@ if (!/\.html$|\/$|#/.test(window.location.href))
 <H2>Fortran 77 compiler</H2>
 <TABLE class="Rconfig">
 <TR><TD style="background: #CCC; width: 150px;"><I><B>R variable</B> (VAR)</I></TD><TD style="background: #CCC;"><I><B>Value</B> ('R&nbsp;CMD&nbsp;config&nbsp;&lt;VAR&gt;' output)</I></TD></TR>
-<TR><TD><B>F77</B></TD><TD>{{ f77 }}</TD></TR>
-<TR><TD><B>FFLAGS</B></TD><TD>{{ fflags }}</TD></TR>
-<TR><TD><B>FLIBS</B></TD><TD>{{ flibs}}</TD></TR>
-<TR><TD><B>FPICFLAGS</B></TD><TD>{{ fpicflags }}</TD></TR>
+{% for key, value in f77dict.iteritems() %}
+	<TR><TD><B>{{ key }} </B></TD><TD>{{ value }}</TD></TR>
+{% endfor %}
 <TR><TD COLSPAN="2" style="font-size: smaller;"><I>Please refer to 'R CMD config -h' for the meaning of these variables</I></TD></TR>
 </TABLE>
-<P><B>Compiler version</B> ('gfortran --version' output):</P>
+<P><B>Compiler version</B> ('{{ f77dict['F77'] }} --version' output):</P>
 <PRE style="margin-left: 12px;">
-{{ fortran_compiler_version}}
+{{ f77_compiler_version }}
 </PRE>
 <HR>
 <H2>Fortran 9x compiler</H2>
 <TABLE class="Rconfig">
 <TR><TD style="background: #CCC; width: 150px;"><I><B>R variable</B> (VAR)</I></TD><TD style="background: #CCC;"><I><B>Value</B> ('R&nbsp;CMD&nbsp;config&nbsp;&lt;VAR&gt;' output)</I></TD></TR>
-<TR><TD><B>FC</B></TD><TD>{{ fortran9_fc }}</TD></TR>
-<TR><TD><B>FCFLAGS</B></TD><TD>{{ fortran9_fcflags }}</TD></TR>
-<TR><TD><B>FCPICFLAGS</B></TD><TD>{{ fortran9_fcpicflags }}</TD></TR>
+{% for key, value in f9xdict.iteritems() %}
+	<TR><TD><B>{{ key }} </B></TD><TD>{{ value }}</TD></TR>
+{% endfor %}
 <TR><TD COLSPAN="2" style="font-size: smaller;"><I>Please refer to 'R CMD config -h' for the meaning of these variables</I></TD></TR>
 </TABLE>
-<P><B>Compiler version</B> ('gfortran --version' output):</P>
+<P><B>Compiler version</B> ('{{ f9xdict['FC'] }} --version' output):</P>
 <PRE style="margin-left: 12px;">
-{{ fortran9_compiler_version}}
+{{ f9x_compiler_version}}
 </PRE>
 <HR>
 <P>More information might be added in the future...</P>
