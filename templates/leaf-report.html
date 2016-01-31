@@ -31,9 +31,80 @@ if (!/\.html$|\/$|#/.test(window.location.href))
 <P style="text-align: center;">
 <I>This page was generated on {{ date}}.</I>
 </P>
+
+{% if motd != "" %}
+    <TABLE class="motd">
+    <TR><TD>{{ motd }}</TD></TR>
+    </TABLE>
+{% endif %}
+
 <TABLE class="mainrep">
-<TR class="odd ok header"><TD>Package <B>1</B>/6</TD><TD style="text-align: left">Hostname</TD><TD style="text-align: left; width: 290px">OS&nbsp;/&nbsp;Arch</TD><TD class="stagecmd install" style="text-align: center; width: 96px">INSTALL</TD><TD class="stagecmd buildsrc" style="text-align: center; width: 96px">BUILD</TD><TD class="stagecmd checksrc" style="text-align: center; width: 96px">CHECK</TD><TD class="stagecmd buildbin" style="text-align: center; width: 96px">BUILD BIN</TD><TD style="width:11px;"></TD></TR>
-<TR class="odd ok"><TD ROWSPAN="1" style="padding-left: 12px; vertical-align: top;"><B><A href="/packages/3.3/bioc/html/a4.html">a4</A>&nbsp;1.15.0</B><BR>Tobias Verbeke <tobias.verbeke@openanalytics.eu>, Willem<BR><TABLE class="svn_info"><TR><TD class="svn_info">Snapshot&nbsp;Date:&nbsp;<SPAN class="svn_info">2015-02-25&nbsp;17:20:29&nbsp;-0800&nbsp;(Wed,&nbsp;25&nbsp;Feb&nbsp;2015)</SPAN></TD></TR><TR><TD class="svn_info">URL:&nbsp;<SPAN class="svn_info">https://hedgehog.fhcrc.org/bioconductor/trunk/madman/Rpacks/a4</SPAN></TD></TR><TR><TD class="svn_info">Last&nbsp;Changed&nbsp;Rev:&nbsp;<SPAN class="svn_info">95443</SPAN> / Revision:&nbsp;<SPAN class="svn_info">99834</SPAN></TD></TR><TR><TD class="svn_info">Last&nbsp;Changed&nbsp;Date:&nbsp;<SPAN class="svn_info">2014-10-13&nbsp;14:47:41&nbsp;-0700&nbsp;(Mon,&nbsp;13&nbsp;Oct&nbsp;2014)</SPAN></TD></TR></TABLE></TD><TD class="node dockernode current" style="text-align: left"><I>dockernode</I>&nbsp;</TD><TD class="node dockernode current" style="text-align: left"><SPAN style="font-size: smaller;">Linux&nbsp;(Ubuntu&nbsp;14.04.1&nbsp;LTS)&nbsp;/&nbsp;x86_64</SPAN>&nbsp;</TD><TD class="status dockernode install">[<A href="./dockernode-install.html"><SPAN class="OK">&nbsp;OK&nbsp;</SPAN></A>]</TD><TD class="status dockernode buildsrc"><A href="./dockernode-buildsrc.html"><SPAN class="OK">&nbsp;OK&nbsp;</SPAN></A></TD><TD class="status dockernode checksrc"><A href="./dockernode-checksrc.html"><SPAN class="OK">&nbsp;OK&nbsp;</SPAN></A></TD><TD class="node dockernode"></TD><TD class="status dockernode" style="width: 11px;"><IMG border="0" width="10" height="10" alt="YES, package does not exist in internal repository." title="YES, package does not exist in internal repository." src="../120px-Green_Light_Icon.svg.png"></TD></TR>
+	<TR class="odd ok header">
+		<TD>Package <B>1</B>/6</TD>
+		<TD style="text-align: left">Hostname</TD>
+		<TD style="text-align: left; width: 290px">OS&nbsp;/&nbsp;Arch</TD>
+		<TD class="stagecmd install" style="text-align: center; width: 96px">INSTALL</TD>
+		<TD class="stagecmd buildsrc" style="text-align: center; width: 96px">BUILD</TD>
+		<TD class="stagecmd checksrc" style="text-align: center; width: 96px">CHECK</TD>
+		<TD class="stagecmd buildbin" style="text-align: center; width: 96px">BUILD BIN</TD>
+		<TD style="width:11px;"></TD>
+	</TR>
+	<TR class="odd ok">
+		<TD ROWSPAN="1" style="padding-left: 12px; vertical-align: top;">
+			<B><A href="/packages/3.3/bioc/html/a4.html">a4</A>
+			&nbsp;1.15.0</B>
+			<BR>Tobias Verbeke <tobias.verbeke@openanalytics.eu>,
+			Willem<BR>
+			<TABLE class="svn_info">
+				<TR>
+					<TD class="svn_info">Snapshot&nbsp;Date:&nbsp;
+						<SPAN class="svn_info">
+							2015-02-25&nbsp;17:20:29&nbsp;-0800&nbsp;(Wed,&nbsp;25&nbsp;Feb&nbsp;2015)
+						</SPAN>
+					</TD>
+				</TR>
+				<TR>
+					<TD class="svn_info">URL:&nbsp;
+						<SPAN class="svn_info">https://hedgehog.fhcrc.org/bioconductor/trunk/madman/Rpacks/a4</SPAN>
+					</TD>
+				</TR>
+				<TR>
+					<TD class="svn_info">Last&nbsp;Changed&nbsp;Rev:&nbsp;
+						<SPAN class="svn_info">95443</SPAN>
+						 / Revision:&nbsp;
+						 <SPAN class="svn_info">99834</SPAN>
+					</TD>
+				</TR>
+				<TR>
+					<TD class="svn_info">Last&nbsp;Changed&nbsp;Date:&nbsp;
+						<SPAN class="svn_info">2014-10-13&nbsp;14:47:41&nbsp;-0700&nbsp;(Mon,&nbsp;13&nbsp;Oct&nbsp;2014)</SPAN>
+					</TD>
+				</TR>
+			</TABLE>
+		</TD>
+		<TD class="node dockernode current" style="text-align: left"><I>dockernode</I>&nbsp;</TD>
+		<TD class="node dockernode current" style="text-align: left">
+			<SPAN style="font-size: smaller;">Linux&nbsp;(Ubuntu&nbsp;14.04.1&nbsp;LTS)&nbsp;/&nbsp;x86_64</SPAN>
+			&nbsp;
+		</TD><TD class="status dockernode install">[<A href="./dockernode-install.html">
+			<SPAN class="OK">&nbsp;OK&nbsp;</SPAN>
+			</A>]
+		</TD>
+		<TD class="status dockernode buildsrc">
+			<A href="./dockernode-buildsrc.html">
+			<SPAN class="OK">&nbsp;OK&nbsp;</SPAN>
+			</A>
+		</TD>
+		<TD class="status dockernode checksrc">
+			<A href="./dockernode-checksrc.html">
+				<SPAN class="OK">&nbsp;OK&nbsp;</SPAN>
+			</A>
+		</TD>
+		<TD class="node dockernode"></TD>
+		<TD class="status dockernode" style="width: 11px;">
+			<IMG border="0" width="10" height="10" alt="YES, package does not exist in internal repository." title="YES, package does not exist in internal repository." src="../120px-Green_Light_Icon.svg.png"/>
+		</TD>
+	</TR>
 </TABLE>
 <HR>
 <H3>Summary</H3>

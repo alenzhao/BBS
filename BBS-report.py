@@ -713,6 +713,11 @@ def make_LeafReport(leafreport_ref, allpkgs):
     data['letters'] = list(string.ascii_uppercase)
     data['back_url'] = '../index.html'
     data['date'] = date
+    if not 'BBS_REPORT_MOTD' in os.environ:
+        data['motd'] = ''
+    else:
+        data['motd'] = os.environ['BBS_REPORT_MOTD']
+
     # dante
 
 
