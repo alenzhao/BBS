@@ -13,6 +13,7 @@ import time
 import shutil
 import re
 import fnmatch
+import string
 from collections import OrderedDict
 
 from jinja2 import Environment, FileSystemLoader
@@ -704,44 +705,51 @@ def make_LeafReport(leafreport_ref, allpkgs):
     title = '%s: %s report for %s on %s' % (BBSreportutils.get_build_label(), stagecmd2label[stagecmd], pkg, node_id)
     leafreport_rURL = BBSreportutils.get_leafreport_rURL(pkg, node_id, stagecmd)
     date = bbs.jobs.currentDateString()
-    out = open(leafreport_rURL, 'w')
+    template = TEMPLATE_ENV.get_template("leaf-report.html")
+    data = {}
+    data['title'] = title
+    data['css'] = '../report.css'
+    data['current_letter'] = pkg[0:1].upper()
+    data['letters'] = list(string.ascii_uppercase)
+    data['back_url'] = '../index.html'
+    data['date'] = date
+    # dante
+
 
     ## Start writing the HTML page
-    write_top_asHTML(out, title, '../report.css')
-    out.write('<BODY>\n')
-    current_letter = pkg[0:1].upper()
-    write_goback_asHTML(out, "../index.html", current_letter)
-    out.write('<BR>\n')
-    out.write('<H1 style="text-align: center;">%s</H1>\n' % title)
-    out.write('<P style="text-align: center;">\n')
-    out.write('<I>This page was generated on %s.</I>\n' % date)
-    out.write('</P>\n')
-    write_motd_asTABLE(out)
-    write_mainreport_asTABLE(out, allpkgs, leafreport_ref)
-    #if len(BBSreportutils.NODES) != 1:
-    #    write_mainreport_asTABLE(out, allpkgs, leafreport_ref)
-    #else:
-    #    write_compactreport_asTABLE(out, BBSreportutils.NODES[0], allpkgs, leafreport_ref)
-    out.write('<HR>\n')
+    # out = open(leafreport_rURL, 'w')
+    # write_top_asHTML(out, title, '../report.css')
+    # out.write('<BODY>\n')
+    # current_letter = pkg[0:1].upper()
+    # write_goback_asHTML(out, "../index.html", current_letter)
+    # out.write('<BR>\n')
+    # out.write('<H1 style="text-align: center;">%s</H1>\n' % title)
+    # out.write('<P style="text-align: center;">\n')
+    # out.write('<I>This page was generated on %s.</I>\n' % date)
+    # out.write('</P>\n')
+    # write_motd_asTABLE(out)
+    # write_mainreport_asTABLE(out, allpkgs, leafreport_ref)
+    # out.write('<HR>\n')
 
-    status = BBSreportutils.get_status_from_db(pkg, node_id, stagecmd)
-    if stagecmd == "install" and status == "NotNeeded":
-        out.write('<DIV class="%s" style="margin-left: 12px;">\n' % node_hostname.replace(".", "_"))
-        out.write('REASON FOR NOT INSTALLING: no other package that will ')
-        out.write('be built and checked on this platform needs %s' % pkg)
-        out.write('</DIV>\n')
-    else:
-        ## Summary
-        write_Summary_to_LeafReport(out, node_hostname,
-                                    pkg, node_id, stagecmd)
-        out.write('<HR>\n')
-        ## Command output
-        write_Command_output_to_LeafReport(out, node_hostname,
-                                           pkg, node_id, stagecmd)
-    out.write('</BODY>\n')
-    out.write('</HTML>\n')
-    out.close()
-    return
+    # status = BBSreportutils.get_status_from_db(pkg, node_id, stagecmd)
+    # if stagecmd == "install" and status == "NotNeeded":
+    #     out.write('<DIV class="%s" style="margin-left: 12px;">\n' % node_hostname.replace(".", "_"))
+    #     out.write('REASON FOR NOT INSTALLING: no other package that will ')
+    #     out.write('be built and checked on this platform needs %s' % pkg)
+    #     out.write('</DIV>\n')
+    # else:
+    #     ## Summary
+    #     write_Summary_to_LeafReport(out, node_hostname,
+    #                                 pkg, node_id, stagecmd)
+    #     out.write('<HR>\n')
+    #     ## Command output
+    #     write_Command_output_to_LeafReport(out, node_hostname,
+    #                                        pkg, node_id, stagecmd)
+    # out.write('</BODY>\n')
+    # out.write('</HTML>\n')
+    # out.close()
+    template.stream(data).dump(leafreport_rURL)
+
 
 def make_node_LeafReports(allpkgs, node):
     print "BBS> [make_node_LeafReports] Node %s: BEGIN..." % node.id
