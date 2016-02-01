@@ -46,6 +46,10 @@ if (!/\.html$|\/$|#/.test(window.location.href))
 	{% set strike_close = "" %}
 {% endif %}
 
+{% macro nb(str) -%}
+	{{ str|replace(" ", "&nbsp;") }}
+{%- endmacro %}
+
 <TABLE class="mainrep">
 	<TR class="odd ok header">
 		<TD>Package <B>{{ pkg_pos }}</B>/{{ numpkgs }}</TD>
@@ -63,30 +67,16 @@ if (!/\.html$|\/$|#/.test(window.location.href))
 			&nbsp;1.15.0</B>
 			<BR>{{ maintainer }}<BR>
 			<TABLE class="svn_info">
-				<TR>
-					<TD class="svn_info">Snapshot&nbsp;Date:&nbsp;
-						<SPAN class="svn_info">
-							2015-02-25&nbsp;17:20:29&nbsp;-0800&nbsp;(Wed,&nbsp;25&nbsp;Feb&nbsp;2015)
-						</SPAN>
-					</TD>
-				</TR>
-				<TR>
-					<TD class="svn_info">URL:&nbsp;
-						<SPAN class="svn_info">https://hedgehog.fhcrc.org/bioconductor/trunk/madman/Rpacks/a4</SPAN>
-					</TD>
-				</TR>
-				<TR>
-					<TD class="svn_info">Last&nbsp;Changed&nbsp;Rev:&nbsp;
-						<SPAN class="svn_info">95443</SPAN>
-						 / Revision:&nbsp;
-						 <SPAN class="svn_info">99834</SPAN>
-					</TD>
-				</TR>
-				<TR>
-					<TD class="svn_info">Last&nbsp;Changed&nbsp;Date:&nbsp;
-						<SPAN class="svn_info">2014-10-13&nbsp;14:47:41&nbsp;-0700&nbsp;(Mon,&nbsp;13&nbsp;Oct&nbsp;2014)</SPAN>
-					</TD>
-				</TR>
+				{% for key, value in svn_info.iteritems() %}
+					<TR>
+						<TD class="svn_info">{{ nb(key) }}:
+							<SPAN class="svn_info">
+								{{ nb(value) }}
+							</SPAN>
+						</TD>
+					</TR>
+
+				{% endfor %}
 			</TABLE>
 		</TD>
 		<TD class="node dockernode current" style="text-align: left"><I>dockernode</I>&nbsp;</TD>

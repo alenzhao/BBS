@@ -726,6 +726,13 @@ def make_LeafReport(leafreport_ref, allpkgs):
     data['maintainer'] = re.sub(r, '', mtr)
     data['status'] = BBSreportutils.get_pkg_field_from_meat_index(pkg, 'PackageStatus')
 
+    svn_info = OrderedDict()
+    svn_info['Snapshot Date'] = BBSreportutils.get_svn_info(None, 'Snapshot Date')
+    svn_keys = ['URL', 'Last Changed Rev', 'Last Changed Date']
+    for svn_key in svn_keys:
+        svn_info[svn_key] = BBSreportutils.get_svn_info(pkg, svn_key)
+    data['svn_info'] = svn_info
+
 
     ## Start writing the HTML page
     # out = open(leafreport_rURL, 'w')
