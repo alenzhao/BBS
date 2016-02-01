@@ -38,9 +38,17 @@ if (!/\.html$|\/$|#/.test(window.location.href))
     </TABLE>
 {% endif %}
 
+{% if status == "Deprecated" %}
+	{% set strike = "<s>" %}
+	{% set strike_close = "</s>" %}
+{% else %}
+	{% set strike = "" %}
+	{% set strike_close = "" %}
+{% endif %}
+
 <TABLE class="mainrep">
 	<TR class="odd ok header">
-		<TD>Package <B>1</B>/6</TD>
+		<TD>Package <B>{{ pkg_pos }}</B>/{{ numpkgs }}</TD>
 		<TD style="text-align: left">Hostname</TD>
 		<TD style="text-align: left; width: 290px">OS&nbsp;/&nbsp;Arch</TD>
 		<TD class="stagecmd install" style="text-align: center; width: 96px">INSTALL</TD>
@@ -51,10 +59,9 @@ if (!/\.html$|\/$|#/.test(window.location.href))
 	</TR>
 	<TR class="odd ok">
 		<TD ROWSPAN="1" style="padding-left: 12px; vertical-align: top;">
-			<B><A href="/packages/3.3/bioc/html/a4.html">a4</A>
+			<B>{{strike}}<A href="/packages/{{bioc_version}}/{{repo}}/html/{{pkg}}.html">{{pkg}}</A>{{strike_close}}
 			&nbsp;1.15.0</B>
-			<BR>Tobias Verbeke <tobias.verbeke@openanalytics.eu>,
-			Willem<BR>
+			<BR>{{ maintainer }}<BR>
 			<TABLE class="svn_info">
 				<TR>
 					<TD class="svn_info">Snapshot&nbsp;Date:&nbsp;

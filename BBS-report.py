@@ -573,17 +573,6 @@ def write_goback_asHTML(out, href, current_letter=None):
     out.write('</TR></TABLE>\n')
     return
 
-def write_motd_asTABLE(out):
-    if not 'BBS_REPORT_MOTD' in os.environ:
-        return
-    motd = os.environ['BBS_REPORT_MOTD']
-    if motd == "":
-        return
-    out.write('<TABLE class="motd">')
-    out.write('<TR><TD>%s</TD></TR>' % bbs.html.encodeHTMLentities(motd, 'utf_8')) # untrusted
-    out.write('</TABLE>\n')
-    return
-
 def make_PkgReportLandingPage(leafreport_ref, allpkgs):
     pkg = leafreport_ref.pkg
     title = '%s: BUILD/CHECK reports for %s' % (BBSreportutils.get_build_label(), pkg)
@@ -707,6 +696,7 @@ def make_LeafReport(leafreport_ref, allpkgs):
     date = bbs.jobs.currentDateString()
     template = TEMPLATE_ENV.get_template("leaf-report.html")
     data = {}
+    data['pkg'] = pkg
     data['title'] = title
     data['css'] = '../report.css'
     data['current_letter'] = pkg[0:1].upper()
@@ -719,6 +709,22 @@ def make_LeafReport(leafreport_ref, allpkgs):
         data['motd'] = os.environ['BBS_REPORT_MOTD']
 
     # dante
+    data['numpkgs'] = len(allpkgs)
+    data['pkg_pos'] = allpkgs.index(pkg) + 1
+
+    data['bioc_version'] = BBSreportutils.bioc_version
+    if BBScorevars.mode == "data-experiment":
+        data['repo'] = "data/experiment"
+    else:
+        data['repo'] = "bioc"
+
+
+
+    data['version'] = BBSreportutils.get_pkg_field_from_meat_index(pkg, 'Version')
+    mtr = BBSreportutils.get_pkg_field_from_meat_index(pkg, 'Maintainer')
+    r = re.compile("\s+<[^>]+>") # filter out email addresses
+    data['maintainer'] = re.sub(r, '', mtr)
+    data['status'] = BBSreportutils.get_pkg_field_from_meat_index(pkg, 'PackageStatus')
 
 
     ## Start writing the HTML page
@@ -1119,6 +1125,18 @@ def write_select_status_table(out):
     out.write('</TR>\n')
     out.write('</TABLE>\n')
     out.write('</FORM>\n')
+    return
+
+# FIXME TODO - remove this everything is templatized
+def write_motd_asTABLE(out):
+    if not 'BBS_REPORT_MOTD' in os.environ:
+        return
+    motd = os.environ['BBS_REPORT_MOTD']
+    if motd == "":
+        return
+    out.write('<TABLE class="motd">')
+    out.write('<TR><TD>%s</TD></TR>' % bbs.html.encodeHTMLentities(motd, 'utf_8')) # untrusted
+    out.write('</TABLE>\n')
     return
 
 
