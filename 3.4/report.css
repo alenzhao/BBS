@@ -1,6 +1,5 @@
 BODY {
-    background: #999966;
-/*    background-image: url('DEVEL3b-green2.png'); */
+    background: #39b6b9;
     font-family: sans-serif;
     font-size: 10pt;
 }
@@ -254,16 +253,18 @@ TABLE.mainrep .even .zin1 {
     background: #9AB;
 }
 
-/* linux2_bioconductor_org */
-DIV.linux2_bioconductor_org,
-TR.linux2_bioconductor_org TD,
-TABLE.mainrep .linux2_bioconductor_org,
-TABLE.mainrep .odd .linux2_bioconductor_org {
-    background: #ACD;
+
+/* linux1_bioconductor_org */
+DIV.linux1_bioconductor_org,
+TR.linux1_bioconductor_org TD,
+TABLE.mainrep .linux1_bioconductor_org,
+TABLE.mainrep .odd .linux1_bioconductor_org {
+    background: #BCD;
 }
-TABLE.mainrep .even .linux2_bioconductor_org {
-    background: #8AB;
+TABLE.mainrep .even .linux1_bioconductor_org {
+    background: #9AB;
 }
+
 
 /* zin2 */
 DIV.zin2,
@@ -275,21 +276,6 @@ TABLE.mainrep .odd .zin2 {
 TABLE.mainrep .even .zin2 {
     background: #8AB;
 }
-
-
-
-/* dockernode */
-DIV.dockernode,
-TR.dockernode TD,
-TABLE.mainrep .dockernode,
-TABLE.mainrep .odd .dockernode {
-    background: #ACD;
-}
-TABLE.mainrep .even .dockernode {
-    background: #8AB;
-}
-
-
 
 /* wilson2 */
 DIV.wilson2,
@@ -379,6 +365,17 @@ TABLE.mainrep .even .gewurz {
     background: #C98;
 }
 
+/* windows1_bioconductor_org */
+DIV.windows1_bioconductor_org,
+TR.windows1_bioconductor_org TD,
+TABLE.mainrep .windows1_bioconductor_org,
+TABLE.mainrep .odd .windows1_bioconductor_org {
+    background: #EBA;
+}
+TABLE.mainrep .even .windows1_bioconductor_org {
+    background: #C98;
+}
+
 /* moscato1 */
 DIV.moscato1,
 TR.moscato1 TD,
@@ -390,16 +387,7 @@ TABLE.mainrep .even .moscato1 {
     background: #C98;
 }
 
-/* windows2_bioconductor_org */
-DIV.windows2_bioconductor_org,
-TR.windows2_bioconductor_org TD,
-TABLE.mainrep .windows2_bioconductor_org,
-TABLE.mainrep .odd .windows2_bioconductor_org {
-    background: #EBA;
-}
-TABLE.mainrep .even .windows2_bioconductor_org {
-    background: #C98;
-}
+
 
 /* moscato2 */
 DIV.moscato2,
@@ -411,8 +399,6 @@ TABLE.mainrep .odd .moscato2 {
 TABLE.mainrep .even .moscato2 {
     background: #C98;
 }
-
-
 
 /* walpole */
 DIV.walpole,
@@ -512,3 +498,4 @@ TABLE.mainrep .odd .oaxaca {
 TABLE.mainrep .even .oaxaca {
     background: #BAD;
 }
+
