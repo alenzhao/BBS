@@ -3,7 +3,7 @@
 this_script=$(basename "$0")
 echo "<<< Now starting $this_script at $(date) >>>"
 
-cd "$HOME/manage-BioC-repos/3.3"
+cd "$HOME/manage-BioC-repos/3.4"
 
 . ./config.sh
 
@@ -15,7 +15,6 @@ PROPAGATION_DB_FILE="$BBS_OUTGOING_DIR/../PROPAGATE_STATUS_DB.txt"
 REPOS_ROOT="$HOME/PACKAGES/$BIOC_VERSION/bioc"
 SRC_CONTRIB="$REPOS_ROOT/src/contrib"
 WIN_CONTRIB="$REPOS_ROOT/bin/windows/contrib/$R_VERSION"
-MAC_LEOPARD_CONTRIB="$REPOS_ROOT/bin/macosx/contrib/$R_VERSION"
 MAC_MAVERICKS_CONTRIB="$REPOS_ROOT/bin/macosx/mavericks/contrib/$R_VERSION"
 
 update_repo()
@@ -44,10 +43,6 @@ update_repo "$SRC_CONTRIB" "source" "tar.gz"
 echo ""
 echo "Updating $BIOC_VERSION/bioc repo with Windows binary packages..."
 update_repo "$WIN_CONTRIB" "win.binary" "zip"
-
-echo ""
-echo "Updating $BIOC_VERSION/bioc repo with Mac Leopard binary packages..."
-update_repo "$MAC_LEOPARD_CONTRIB" "mac.binary" "tgz"
 
 echo ""
 echo "Updating $BIOC_VERSION/bioc repo with Mac Mavericks binary packages..."

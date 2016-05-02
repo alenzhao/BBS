@@ -2,8 +2,8 @@
 
 ## Example config variables
 ##    SUBVIEW="ExperimentData"
-##    REPOS_NAME="Bioconductor 3.3 Packages - Experiment"
-##    VIEW_ROOT="$HOME/PACKAGES/3.3"
+##    REPOS_NAME="Bioconductor 3.4 Packages - Experiment"
+##    VIEW_ROOT="$HOME/PACKAGES/3.4"
 ##    REPOS_ROOT="$VIEW_ROOT/data/experiment"
 ##    CONTRIB_PATHS="c(source='src/contrib', win.binary='bin/windows/contrib/3.3')"
 ##    HTML_DIR="data/experiment/html"

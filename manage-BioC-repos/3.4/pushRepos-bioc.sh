@@ -2,7 +2,7 @@
 
 this_script=$(basename "$0")
 echo "<<< Now starting $this_script at $(date) >>>"
-cd "$HOME/manage-BioC-repos/3.3"
+cd "$HOME/manage-BioC-repos/3.4"
 
 . ./config.sh
 
