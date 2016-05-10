@@ -242,14 +242,14 @@ TABLE.mainrep .even .george2 {
     background: #CCB;
 }
 
-/* zin1 */
-DIV.zin1,
-TR.zin1 TD,
-TABLE.mainrep .zin1,
-TABLE.mainrep .odd .zin1 {
+/* linux1.bioconductor.org */
+DIV.linux1.bioconductor.org,
+TR.linux1.bioconductor.org TD,
+TABLE.mainrep .linux1.bioconductor.org,
+TABLE.mainrep .odd .linux1.bioconductor.org {
     background: #BCD;
 }
-TABLE.mainrep .even .zin1 {
+TABLE.mainrep .even .linux1.bioconductor.org {
     background: #9AB;
 }
 
