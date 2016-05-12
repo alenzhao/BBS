@@ -14,7 +14,7 @@ export BBS_USER="biocbuild"
 export BBS_RSAKEY="/home/biocbuild/.BBS/id_rsa"
 export BBS_WORK_TOPDIR="/home/biocbuild/bbs-3.3-bioc"
 export BBS_R_HOME="$BBS_WORK_TOPDIR/R"
-export BBS_NB_CPU=5
+export BBS_NB_CPU=6
 
 
 export RCYTOSCAPE_PORT_OVERRIDE="9028"
